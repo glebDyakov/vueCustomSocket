@@ -1,116 +1,108 @@
 <template>
-  <div class="body">
-    <header class="header">
-        <div class="header__container responsive container">
-            <div class="header__start">
+  <div >
+    <div class="chat-box__messages">
+      <div class="chat-box__separator">
+        {{ currentDate }}
+      </div>
+
+
+        <div class="chat-box__message" v-for="message in messages" :key="message.text">
+          <div v-if="!message.owner">
+            <div class="chat-box__message notown">
+              <div class="name">{{ message.name }}</div>
+              <div class="message">
+                {{ message.text }}
+                <div class="time">{{ message.time }}</div>
+                <div class="clear"></div>
+              </div>
             </div>
-            <div class="header__end mobile-d-none">
-                <div class="header__user mobile-d-none">
-                    <a href="" class="toggler">
-                      <i class="material-icons">person</i>
-                    </a>
-                    <div class="droplist">
-                      <div class="title">Логин</div>
-                      <ul class="list">
-                        <li><a href="#">История</a></li>
-                        <li><a href="#">Настройки</a></li>
-                        <li><a href="#">Выход</a></li>
-                      </ul>
-                    </div>
-                </div>
-                <div class="header__notifications mobile-d-none">
-                    <a href="#" class="toggler">
-                      <i class="material-icons">notifications</i>
-                    </a>
-                    <div class="droplist extended">
-                      <div class="title">Новые уведомления <a href="#">Посмотреть все</a></div>
-                      <div class="none">Новых уведомлений нет</div>
-                    </div>
-                </div>
-                <div class="header__lang mobile-d-none">
-                    <div class="toggler">
-                        <i class="material-icons">language</i><i class="material-icons">arrow_circle_down</i>
-                    </div>
-                    <div class="droplist">
-                        <div class="title">Язык</div>
-                        <ul class="list">
-                            <li><a href="#" class="active">Русский</a></li>
-                            <li><a href="#">English</a></li>
-                        </ul>
-                    </div>
-                </div>
+          </div>
+          <div v-else-if="message.owner">
+          <div class="chat-box__message own">
+            <div class="name">{{ message.name }}</div>
+            <div class="message">
+              {{ message.text }}
+              <div class="time">{{ message.time }}</div>
+              <div class="clear"></div>
             </div>
+           </div>
+          </div>
         </div>
-    </header>
-<div class="custom-page">
-    <div class="custom-page__bg message-page__bg">
+      <div class="clear"></div>
     </div>
-    <div class="container medium">
-        <div class="chat-box">
-            <div class="chat-box__header">
-                <a href="#" class="back">
-                  <i class="material-icons">
-                    arrow_left
-                  </i>
-                </a>
-                <h1 class="main-title">Добро пожаловать в онлаин-чат службы поддержки</h1>
-                <div style="width: 12px;" class=""></div>
-            </div>
-            <Chat/>
+    <form class="chat-box__form main-form">
+        <textarea class="input-style" rows="7" v-model="message"></textarea>
+        <div class="row">
+          <label class="main-form__item file-field">
+          </label>
+          <div class="main-form__submit">
+            <button @click="sendMessage(true)" class="radius-button standart rounded">Отправить</button>
+          </div>
         </div>
-    </div>
-</div>
-    <footer class="footer">
-        <div class="container responsive footer__container">
-            <div class="footer__item">
-                <div class="footer__copyright">Copyright    &#169; 2020 MyStartup</div>
-                <div class="footer__copyright">Все права защищены.</div>
-            </div>
-            <div class="footer__item">
-                <ul class="footer__menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Наша миссия</a></li>
-                    <li><a href="#">Наша команда</a></li>
-                    <li><a href="#">Контакты</a></li>
-                </ul>
-                <div class="footer__socials">
-                    <a href="#"><i class="icon icon-vk"></i></a>
-                    <a href="#"><i class="icon icon-instagram"></i></a>
-                    <a href="#"><i class="icon icon-facebook"></i></a>
-                    <a href="#"><i class="icon icon-twitter"></i></a>
-                    <a href="#"><i class="icon icon-telegram"></i></a>
-                </div>
-            </div>
-            <ul class="footer__item _mobile footer__menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Наша миссия</a></li>
-                    <li><a href="#">Наша команда</a></li>
-                    <li><a href="#">Контакты</a></li>
-            </ul>
-            <div class="footer__item">
-                <a href="#" class="radius-button support-button dotted">Поддержка</a>
-                <a href="#" class="footer__link">Пользовательское соглашение</a>
-                <a href="#" class="footer__link">Политика конфиденциальности</a>
-            </div>
-            <div class="footer__item _mobile">
-                <div class="footer__copyright _mobile">Copyright    &#169; 2020 Bitswap.</div>
-                <div class="footer__copyright _mobile">Все права защищены.</div>
-            </div>
-        </div>
-    </footer>
+    </form>
   </div>
 </template>
 <script>
-import Chat from "@/components/Chat.vue"
 export default {
-  name: 'Home',
-  components:{
-    Chat
+  name: 'Chat',
+  data(){
+    return {
+      socket: null,
+      message: '',
+      messages: [
+        
+      ],
+      currentDate: new Intl.DateTimeFormat('ru-RU', {  month: 'long', day: 'numeric' }).format(new Date())
+    }
+  },
+  methods: {
+    initializeWebSocket(){
+      this.socket = new WebSocket("ws://skade.cc:38080")
+      this.socket.onmessage = (event) => {
+        this.sendMessage(false, event.data)
+      }
+
+      this.socket.onerror = (error) => {
+        this.initializeWebSocket()
+      }
+      this.sendMessage(false, `{"name":"Служба поддержки","text":"Добрый день, Дмитрий. Опишите вашу проблему более подробно. У вас возникли ошибки (баги) на сайте?","time":"${new Date().getHours().toString() + ' : ' + new Date().getMinutes().toString()}","owner":true}`)
+    },
+    sendMessage(isOwner, socketData = ''){
+      
+        let timeStamp =  new Date().getHours().toString() + ' : ' + new Date().getMinutes().toString()
+        let dateStamp = new Date().toLocaleDateString()
+        if(isOwner){
+          const newMessage = JSON.stringify({
+            'name': '',
+            'text': this.message,
+            'time': timeStamp,
+            'date': dateStamp,
+            'owner': isOwner
+          })
+          let newMessageJSON = JSON.parse(newMessage)
+          this.messages.push(newMessageJSON)
+          this.message = ''
+          this.socket.send(newMessage)
+      } else if (!isOwner){
+            const newMessage = JSON.stringify({
+            'name': 'Служба поддержки',
+            'text': JSON.parse(socketData).text,
+            'time': timeStamp,
+            'date': dateStamp,
+            'owner': isOwner
+          })
+          let newMessageJSON = JSON.parse(newMessage)
+          this.messages.push(newMessageJSON)
+      }
+    }
+  },
+  mounted(){
+    this.initializeWebSocket()
   }
 }
 </script>
 <style scoped>
-@charset "UTF-8";
+    @charset "UTF-8";
 @font-face {
   font-family: 'ish-exo';
   src: url("../fonts/Exo2-Regular.ttf");
@@ -2350,8 +2342,13 @@ a:hover {
   width: 88%;
   margin-bottom: 50px;
   margin-top: -16px;
+  clear:both;
 }
 
+.chat-box__message.notown {
+  margin-top: 0;
+  float: left;
+}
 .chat-box__message.own {
   margin-top: 0;
   float: right;

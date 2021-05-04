@@ -1,115 +1,3 @@
-<template>
-  <div class="body">
-    <header class="header">
-        <div class="header__container responsive container">
-            <div class="header__start">
-            </div>
-            <div class="header__end mobile-d-none">
-                <div class="header__user mobile-d-none">
-                    <a href="" class="toggler">
-                      <i class="material-icons">person</i>
-                    </a>
-                    <div class="droplist">
-                      <div class="title">Логин</div>
-                      <ul class="list">
-                        <li><a href="#">История</a></li>
-                        <li><a href="#">Настройки</a></li>
-                        <li><a href="#">Выход</a></li>
-                      </ul>
-                    </div>
-                </div>
-                <div class="header__notifications mobile-d-none">
-                    <a href="#" class="toggler">
-                      <i class="material-icons">notifications</i>
-                    </a>
-                    <div class="droplist extended">
-                      <div class="title">Новые уведомления <a href="#">Посмотреть все</a></div>
-                      <div class="none">Новых уведомлений нет</div>
-                    </div>
-                </div>
-                <div class="header__lang mobile-d-none">
-                    <div class="toggler">
-                        <i class="material-icons">language</i><i class="material-icons">arrow_circle_down</i>
-                    </div>
-                    <div class="droplist">
-                        <div class="title">Язык</div>
-                        <ul class="list">
-                            <li><a href="#" class="active">Русский</a></li>
-                            <li><a href="#">English</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-<div class="custom-page">
-    <div class="custom-page__bg message-page__bg">
-    </div>
-    <div class="container medium">
-        <div class="chat-box">
-            <div class="chat-box__header">
-                <a href="#" class="back">
-                  <i class="material-icons">
-                    arrow_left
-                  </i>
-                </a>
-                <h1 class="main-title">Добро пожаловать в онлаин-чат службы поддержки</h1>
-                <div style="width: 12px;" class=""></div>
-            </div>
-            <Chat/>
-        </div>
-    </div>
-</div>
-    <footer class="footer">
-        <div class="container responsive footer__container">
-            <div class="footer__item">
-                <div class="footer__copyright">Copyright    &#169; 2020 MyStartup</div>
-                <div class="footer__copyright">Все права защищены.</div>
-            </div>
-            <div class="footer__item">
-                <ul class="footer__menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Наша миссия</a></li>
-                    <li><a href="#">Наша команда</a></li>
-                    <li><a href="#">Контакты</a></li>
-                </ul>
-                <div class="footer__socials">
-                    <a href="#"><i class="icon icon-vk"></i></a>
-                    <a href="#"><i class="icon icon-instagram"></i></a>
-                    <a href="#"><i class="icon icon-facebook"></i></a>
-                    <a href="#"><i class="icon icon-twitter"></i></a>
-                    <a href="#"><i class="icon icon-telegram"></i></a>
-                </div>
-            </div>
-            <ul class="footer__item _mobile footer__menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Наша миссия</a></li>
-                    <li><a href="#">Наша команда</a></li>
-                    <li><a href="#">Контакты</a></li>
-            </ul>
-            <div class="footer__item">
-                <a href="#" class="radius-button support-button dotted">Поддержка</a>
-                <a href="#" class="footer__link">Пользовательское соглашение</a>
-                <a href="#" class="footer__link">Политика конфиденциальности</a>
-            </div>
-            <div class="footer__item _mobile">
-                <div class="footer__copyright _mobile">Copyright    &#169; 2020 Bitswap.</div>
-                <div class="footer__copyright _mobile">Все права защищены.</div>
-            </div>
-        </div>
-    </footer>
-  </div>
-</template>
-<script>
-import Chat from "@/components/Chat.vue"
-export default {
-  name: 'Home',
-  components:{
-    Chat
-  }
-}
-</script>
-<style scoped>
 @charset "UTF-8";
 @font-face {
   font-family: 'ish-exo';
@@ -125,15 +13,27 @@ export default {
   font-style: normal;
 }
 
- @font-face {
+@font-face {
   font-family: 'ish-open';
   src: url("../fonts/OpenSans-Italic.ttf");
   font-weight: 400;
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'ish-open';
+  src: url("../fonts/OpenSans-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
 
-
+@font-face {
+  font-family: 'ruble';
+  src: url("../fonts/ruble.eot?88535217");
+  src: url("../fonts/ruble.eot?88535217#iefix") format("embedded-opentype"), url("../fonts/ruble.woff2?88535217") format("woff2"), url("../fonts/ruble.woff?88535217") format("woff"), url("../fonts/ruble.ttf?88535217") format("truetype"), url("../fonts/ruble.svg?88535217#ruble") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
   font-family: "ruble";
@@ -259,7 +159,7 @@ export default {
   padding: 0;
 }
 
-.body {
+body {
   font-family: 'ish-open', sans-serif;
   font-size: 16px;
   background-color: #0d1019;
@@ -822,7 +722,7 @@ h1.main-title + .subtitle {
   opacity: 1;
 }
 
-.body.block {
+body.block {
   overflow: hidden;
 }
 
@@ -3073,4 +2973,5 @@ a:hover {
     margin-bottom: 0px;
   }
 }
-</style>
+
+/*# sourceMappingURL=style.css.map */
